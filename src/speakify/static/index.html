@@ -9,14 +9,19 @@
   <body>
     <div class="container">
       <header>
-        <h1>🎙️ Speakify</h1>
-        <p>Convert your PDF documents to speech</p>
+        <div class="header-top">
+          <h1>🎙️ Speakify</h1>
+          <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">
+            🌙
+          </button>
+        </div>
+        <p>Convert your PDF, DOCX, and TXT documents to speech</p>
       </header>
 
       <main>
         <!-- File Upload Section -->
         <section class="card">
-          <h2>Step 1: Upload PDF</h2>
+          <h2>Step 1: Upload a File</h2>
           <div class="upload-area" id="uploadArea">
             <svg
               class="upload-icon"
@@ -31,16 +36,16 @@
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8l-6-4m6 4l6-4"
               ></path>
             </svg>
-            <p>Drag and drop your PDF here or click to select</p>
+            <p>Drag and drop your PDF, DOCX, or TXT file here or click to select</p>
             <input
               type="file"
               id="pdfFile"
-              accept=".pdf"
+              accept=".pdf,.docx,.txt"
               style="display: none"
             />
           </div>
           <button id="uploadBtn" class="btn btn-primary" disabled>
-            Upload PDF
+            Upload File
           </button>
           <div id="uploadStatus" class="status-message"></div>
         </section>
@@ -48,6 +53,17 @@
         <!-- Text Preview Section -->
         <section class="card" id="textSection" style="display: none">
           <h2>Step 2: Review Text</h2>
+          <div class="page-selection">
+            <div class="settings-group">
+              <label for="pageRangeStart">Start Page:</label>
+              <input type="number" id="pageRangeStart" min="1" value="1" />
+            </div>
+            <div class="settings-group">
+              <label for="pageRangeEnd">End Page:</label>
+              <input type="number" id="pageRangeEnd" min="1" value="1" />
+            </div>
+            <p class="page-info" id="pageInfo">Total pages: 0</p>
+          </div>
           <div class="text-preview">
             <textarea
               id="textContent"
@@ -104,7 +120,17 @@
         <!-- Audio Player Section -->
         <section class="card" id="playerSection" style="display: none">
           <h2>Step 5: Play Audio</h2>
-          <audio id="audioPlayer" controls style="width: 100%"></audio>
+          <div class="player-controls">
+            <button id="playBtn" class="btn btn-control">▶ Play</button>
+            <button id="pauseBtn" class="btn btn-control">⏸ Pause</button>
+            <button id="stopBtn" class="btn btn-control">⏹ Stop</button>
+            <div class="progress-container">
+              <span id="currentTime">0:00</span>
+              <input type="range" id="progressBar" min="0" value="0" />
+              <span id="duration">0:00</span>
+            </div>
+          </div>
+          <audio id="audioPlayer" style="display: none;"></audio>
           <div class="button-group">
             <button id="downloadBtn" class="btn btn-secondary">
               ⬇️ Download Audio

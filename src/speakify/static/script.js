@@ -19,9 +19,37 @@ const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
 const voiceSelect = document.getElementById("voiceSelect");
 const spinner = document.getElementById("spinner");
+const darkModeToggle = document.getElementById("darkModeToggle");
+const pageRangeStart = document.getElementById("pageRangeStart");
+const pageRangeEnd = document.getElementById("pageRangeEnd");
+const pageInfo = document.getElementById("pageInfo");
+const playBtn = document.getElementById("playBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const stopBtn = document.getElementById("stopBtn");
+const progressBar = document.getElementById("progressBar");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+const pageSelection = document.querySelector(".page-selection");
 
 let extractedText = "";
 let audioPath = "";
+let totalPages = 0;
+let uploadId = "";
+let sourceType = "pdf";
+
+// Dark Mode
+const savedDarkMode = localStorage.getItem("darkMode") === "true";
+if (savedDarkMode) {
+  document.body.classList.add("dark-mode");
+  darkModeToggle.textContent = "☀️";
+}
+
+darkModeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  localStorage.setItem("darkMode", isDark);
+  darkModeToggle.textContent = isDark ? "☀️" : "🌙";
+});
 
 // File Upload Handling
 uploadArea.addEventListener("click", () => pdfFile.click());
@@ -75,8 +103,21 @@ async function uploadPDF() {
 
     if (response.ok) {
       extractedText = data.text;
+      uploadId = data.upload_id || "";
+      totalPages = data.total_pages || 1;
+      sourceType = data.source_type || "pdf";
+      
+      // Update page range inputs
+      pageRangeStart.value = 1;
+      pageRangeEnd.value = totalPages;
+      pageRangeStart.max = totalPages;
+      pageRangeEnd.max = totalPages;
+      const isPdf = sourceType === "pdf";
+      pageSelection.style.display = isPdf ? "flex" : "none";
+      pageInfo.textContent = isPdf ? `Total pages: ${totalPages}` : "Document imported";
+      
       textContent.value = extractedText;
-      showMessage(uploadStatus, "success", "PDF uploaded successfully!");
+      showMessage(uploadStatus, "success", "File uploaded successfully!");
 
       // Show next steps
       textSection.style.display = "block";
@@ -85,6 +126,10 @@ async function uploadPDF() {
 
       // Load voices
       loadVoices();
+      
+      // Update text when page range changes
+      pageRangeStart.addEventListener("change", updatePreviewText);
+      pageRangeEnd.addEventListener("change", updatePreviewText);
     } else {
       showMessage(uploadStatus, "error", data.error || "Upload failed");
     }
@@ -93,6 +138,22 @@ async function uploadPDF() {
   } finally {
     showSpinner(false);
   }
+}
+
+// Update preview text based on page range
+function updatePreviewText() {
+  const start = parseInt(pageRangeStart.value);
+  const end = parseInt(pageRangeEnd.value);
+  
+  if (start > end) {
+    pageRangeStart.value = end;
+  }
+  if (end < start) {
+    pageRangeEnd.value = start;
+  }
+  
+  // Show current selection
+  pageInfo.textContent = `Selected pages: ${pageRangeStart.value} - ${pageRangeEnd.value}`;
 }
 
 // Load Available Voices
@@ -137,6 +198,9 @@ async function convertToSpeech() {
   convertBtn.disabled = true;
 
   try {
+    const startPage = parseInt(pageRangeStart.value);
+    const endPage = parseInt(pageRangeEnd.value);
+
     const response = await fetch("/api/synthesize-speech", {
       method: "POST",
       headers: {
@@ -144,9 +208,12 @@ async function convertToSpeech() {
       },
       body: JSON.stringify({
         text: extractedText,
+        upload_id: uploadId,
         rate: parseInt(rateSlider.value),
         volume: volumeSlider.value / 100,
         voice_id: voiceSelect.value,
+        start_page: startPage,
+        end_page: endPage,
       }),
     });
 
@@ -159,6 +226,11 @@ async function convertToSpeech() {
       // Set audio source and show player
       audioPlayer.src = `/api/audio/${filename}`;
       playerSection.style.display = "block";
+      
+      // Reset player controls
+      audioPlayer.currentTime = 0;
+      playBtn.textContent = "▶ Play";
+      resetPlayerDisplay();
 
       showMessage(convertStatus, "success", "Speech synthesized successfully!");
     } else {
@@ -172,13 +244,68 @@ async function convertToSpeech() {
   }
 }
 
+// Audio Player Controls
+playBtn.addEventListener("click", () => {
+  if (audioPlayer.paused) {
+    audioPlayer.play();
+    playBtn.textContent = "▶ Playing...";
+  }
+});
+
+pauseBtn.addEventListener("click", () => {
+  audioPlayer.pause();
+  playBtn.textContent = "▶ Play";
+});
+
+stopBtn.addEventListener("click", () => {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  playBtn.textContent = "▶ Play";
+  resetPlayerDisplay();
+});
+
+audioPlayer.addEventListener("play", () => {
+  playBtn.textContent = "▶ Playing...";
+});
+
+audioPlayer.addEventListener("pause", () => {
+  playBtn.textContent = "▶ Play";
+});
+
+audioPlayer.addEventListener("timeupdate", () => {
+  progressBar.value = audioPlayer.currentTime;
+  currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+});
+
+audioPlayer.addEventListener("loadedmetadata", () => {
+  progressBar.max = audioPlayer.duration;
+  durationEl.textContent = formatTime(audioPlayer.duration);
+});
+
+progressBar.addEventListener("input", () => {
+  audioPlayer.currentTime = progressBar.value;
+});
+
+function resetPlayerDisplay() {
+  progressBar.value = 0;
+  currentTimeEl.textContent = "0:00";
+  durationEl.textContent = "0:00";
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds)) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
 // Download Audio
 downloadBtn.addEventListener("click", () => {
   if (audioPath) {
     const filename = audioPath.split("/").pop();
     const link = document.createElement("a");
     link.href = `/api/audio/${filename}`;
-    link.download = filename;
+      link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -192,16 +319,21 @@ resetBtn.addEventListener("click", () => {
   audioPath = "";
   textContent.value = "";
   uploadBtn.disabled = true;
+  totalPages = 0;
+  sourceType = "pdf";
 
   textSection.style.display = "none";
   settingsSection.style.display = "none";
   convertSection.style.display = "none";
   playerSection.style.display = "none";
+  pageSelection.style.display = "flex";
 
   uploadStatus.innerHTML = "";
   convertStatus.innerHTML = "";
 
   audioPlayer.src = "";
+  resetPlayerDisplay();
+  playBtn.textContent = "▶ Play";
 });
 
 // Utility Functions
@@ -224,3 +356,4 @@ window.addEventListener("load", async () => {
     console.error("Server connection error:", error);
   }
 });
+
