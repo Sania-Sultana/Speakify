@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speakify - PDF to Speech Converter</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🎙️ Speakify</h1>
+        <p>Convert your PDF documents to speech</p>
+      </header>
+
+      <main>
+        <!-- File Upload Section -->
+        <section class="card">
+          <h2>Step 1: Upload PDF</h2>
+          <div class="upload-area" id="uploadArea">
+            <svg
+              class="upload-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8l-6-4m6 4l6-4"
+              ></path>
+            </svg>
+            <p>Drag and drop your PDF here or click to select</p>
+            <input
+              type="file"
+              id="pdfFile"
+              accept=".pdf"
+              style="display: none"
+            />
+          </div>
+          <button id="uploadBtn" class="btn btn-primary" disabled>
+            Upload PDF
+          </button>
+          <div id="uploadStatus" class="status-message"></div>
+        </section>
+
+        <!-- Text Preview Section -->
+        <section class="card" id="textSection" style="display: none">
+          <h2>Step 2: Review Text</h2>
+          <div class="text-preview">
+            <textarea
+              id="textContent"
+              placeholder="Extracted text will appear here..."
+              readonly
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="card" id="settingsSection" style="display: none">
+          <h2>Step 3: Configure Voice</h2>
+          <div class="settings-group">
+            <label for="voiceSelect">Select Voice:</label>
+            <select id="voiceSelect">
+              <option value="0">Default Voice</option>
+            </select>
+          </div>
+
+          <div class="settings-group">
+            <label for="rateSlider">Speech Rate: <span id="rateValue">150</span> wpm</label>
+            <input
+              type="range"
+              id="rateSlider"
+              min="50"
+              max="300"
+              value="150"
+              step="10"
+            />
+          </div>
+
+          <div class="settings-group">
+            <label for="volumeSlider">Volume: <span id="volumeValue">100</span>%</label>
+            <input
+              type="range"
+              id="volumeSlider"
+              min="0"
+              max="100"
+              value="100"
+              step="5"
+            />
+          </div>
+        </section>
+
+        <!-- Convert Section -->
+        <section class="card" id="convertSection" style="display: none">
+          <h2>Step 4: Convert to Speech</h2>
+          <button id="convertBtn" class="btn btn-success">
+            🔊 Convert to Speech
+          </button>
+          <div id="convertStatus" class="status-message"></div>
+        </section>
+
+        <!-- Audio Player Section -->
+        <section class="card" id="playerSection" style="display: none">
+          <h2>Step 5: Play Audio</h2>
+          <audio id="audioPlayer" controls style="width: 100%"></audio>
+          <div class="button-group">
+            <button id="downloadBtn" class="btn btn-secondary">
+              ⬇️ Download Audio
+            </button>
+            <button id="resetBtn" class="btn btn-secondary">↺ Start Over</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>Speakify &copy; 2024 - Convert PDF to Audio</p>
+      </footer>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="spinner" class="spinner" style="display: none"></div>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>

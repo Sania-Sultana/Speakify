@@ -1,0 +1,72 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "setup: venv + install",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"pip",
+				"install",
+				"-e",
+				".[dev]"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "lint",
+			"type": "shell",
+			"command": "ruff",
+			"args": [
+				"check",
+				"."
+			],
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "format: check",
+			"type": "shell",
+			"command": "black",
+			"args": [
+				"--check",
+				"."
+			],
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "mypy",
+			"args": [
+				"src"
+			],
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "test",
+			"type": "shell",
+			"command": "pytest",
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "c:/Users/Admin Sania/OneDrive/Desktop/sem 3-2/intern/Speakify/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		}
+	]
+}
