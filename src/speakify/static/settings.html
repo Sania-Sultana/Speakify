@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speakify Settings</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-top">
+          <h1>Speakify Settings</h1>
+          <a class="settings-toggle-btn icon-btn" href="/" aria-label="Back to main">
+            <!-- Left arrow icon -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+        <p>Choose pages, voice, rate, and volume from one dedicated page</p>
+      </header>
+
+      <main>
+        <section class="card settings-intro">
+          <h2>Speech Controls</h2>
+          <p class="page-helper">These settings are saved and used by the main convert button.</p>
+        </section>
+
+        <div class="settings-menu" role="tablist" aria-label="Settings options">
+          <button class="settings-option-btn is-active" type="button" data-panel="textSection">Review text</button>
+          <button class="settings-option-btn" type="button" data-panel="pagesSection">Select Pages</button>
+          <button class="settings-option-btn" type="button" data-panel="voiceSection">Select Voice</button>
+          <button class="settings-option-btn" type="button" data-panel="rateSection">Speech Rate</button>
+          <button class="settings-option-btn" type="button" data-panel="volumeSection">Volume</button>
+          <button id="darkModeToggle" class="settings-option-btn dark-mode-menu-btn" type="button">Dark Mode</button>
+        </div>
+
+        <div class="settings-panel-grid settings-page-grid">
+          <section class="card settings-card settings-pane is-active" id="textSection">
+            <h2>Step 2: Review Text</h2>
+            <div class="text-preview">
+              <textarea id="textContent" placeholder="Extracted text will appear here..." readonly></textarea>
+            </div>
+          </section>
+
+          <section class="card settings-card settings-pane" id="pagesSection">
+            <h2>Select Pages</h2>
+            <p class="page-helper">Choose the page range you want to convert to speech.</p>
+            <div class="page-selection">
+              <div class="settings-group">
+                <label for="pageRangeStart">Start Page:</label>
+                <input type="number" id="pageRangeStart" min="1" value="1" />
+              </div>
+              <div class="settings-group">
+                <label for="pageRangeEnd">End Page:</label>
+                <input type="number" id="pageRangeEnd" min="1" value="1" />
+              </div>
+              <p class="page-info" id="pageInfo">Total pages: 0</p>
+            </div>
+            <div class="page-actions">
+              <button id="applyPagesBtn" class="btn btn-primary btn-small" type="button">Apply Pages</button>
+              <p id="pageSelectionStatus" class="page-selection-status">Select a range and apply it to preview only those pages.</p>
+            </div>
+          </section>
+
+          <section class="card settings-card settings-pane" id="voiceSection">
+            <h2>Step 3: Select Voice</h2>
+            <div class="settings-group">
+              <label for="voiceSelect">Select Voice:</label>
+              <select id="voiceSelect">
+                <option value="0">Default Voice</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="card settings-card settings-pane" id="rateSection">
+            <h2>Speech Rate</h2>
+            <div class="settings-group">
+              <label for="rateSlider">Speech Rate: <span id="rateValue">150</span> wpm</label>
+              <input type="range" id="rateSlider" min="50" max="300" value="150" step="10" />
+            </div>
+          </section>
+
+          <section class="card settings-card settings-pane" id="volumeSection">
+            <h2>Volume</h2>
+            <div class="volume-actions">
+              <div class="settings-group volume-control">
+                <label for="volumeSlider">Volume: <span id="volumeValue">100</span>%</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="100" step="5" />
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="spinner" class="spinner" style="display: none"></div>
+    <script src="/static/settings.js"></script>
+  </body>
+</html>

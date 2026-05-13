@@ -10,120 +10,74 @@
     <div class="container">
       <header>
         <div class="header-top">
-          <h1>🎙️ Speakify</h1>
-          <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">
-            🌙
-          </button>
+          <h1>Speakify</h1>
+          <a class="settings-toggle-btn icon-btn" href="/settings" aria-label="Open settings">
+            <!-- Gear icon -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z" fill="currentColor" />
+              <path d="M19.4 13.1a7.9 7.9 0 0 0 0-2.2l2.1-1.6a0.4 0.4 0 0 0 0.1-0.5l-2-3.4a0.4 0.4 0 0 0-0.5-0.2l-2.5 1a7.7 7.7 0 0 0-1.9-1.1l-0.4-2.7A0.4 0.4 0 0 0 13.4 2h-4a0.4 0.4 0 0 0-0.4 0.3l-0.4 2.7a7.7 7.7 0 0 0-1.9 1.1l-2.5-1a0.4 0.4 0 0 0-0.5 0.2L2.5 8a0.4 0.4 0 0 0 0.1 0.5L4.7 10.1a7.9 7.9 0 0 0 0 2.2L2.6 14a0.4 0.4 0 0 0-0.1 0.5l2 3.4c0.1 0.2 0.4 0.3 0.6 0.2l2.5-1c0.6 0.5 1.3 0.9 1.9 1.1l0.4 2.7c0 0.2 0.2 0.3 0.4 0.3h4c0.2 0 0.4-0.2 0.4-0.3l0.4-2.7c0.7-0.2 1.3-0.6 1.9-1.1l2.5 1c0.2 0.1 0.5 0 0.6-0.2l2-3.4a0.4 0.4 0 0 0-0.1-0.5l-2.1-1.6z" fill="currentColor" opacity="0.9" />
+            </svg>
+          </a>
         </div>
         <p>Convert your PDF, DOCX, and TXT documents to speech</p>
       </header>
 
       <main>
-        <!-- File Upload Section -->
-        <section class="card">
-          <h2>Step 1: Upload a File</h2>
-          <div class="upload-area" id="uploadArea">
-            <svg
-              class="upload-icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8l-6-4m6 4l6-4"
-              ></path>
-            </svg>
-            <p>Drag and drop your PDF, DOCX, or TXT file here or click to select</p>
-            <input
-              type="file"
-              id="pdfFile"
-              accept=".pdf,.docx,.txt"
-              style="display: none"
-            />
-          </div>
-          <button id="uploadBtn" class="btn btn-primary" disabled>
-            Upload File
-          </button>
-          <div id="uploadStatus" class="status-message"></div>
-        </section>
-
-        <!-- Text Preview Section -->
-        <section class="card" id="textSection" style="display: none">
-          <h2>Step 2: Review Text</h2>
-          <div class="page-selection">
-            <div class="settings-group">
-              <label for="pageRangeStart">Start Page:</label>
-              <input type="number" id="pageRangeStart" min="1" value="1" />
+        <div class="workflow-grid">
+          <!-- File Upload Section -->
+          <section class="card workflow-card">
+            <h2>Step 1: Upload a File</h2>
+            <div class="upload-area" id="uploadArea">
+              <svg class="upload-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- Book with turned page / page-curl -->
+                <rect x="6" y="8" width="40" height="48" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <!-- center spine -->
+                <path d="M26 10v44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <!-- right cover / turned page shape -->
+                <path d="M46 10h6v28c0 6-4 10-10 10H38V26c0-6 4-10 8-10z" fill="none" stroke="currentColor" stroke-width="2"/>
+                <!-- page curl (fold) -->
+                <path d="M46 10c4 0 8 4 8 8v6c0 4-2 6-6 8-2 1-2 3-2 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+                <!-- inner page lines -->
+                <g stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.9">
+                  <path d="M12 18h22"/>
+                  <path d="M12 24h22"/>
+                  <path d="M12 30h22"/>
+                </g>
+              </svg>
+              <p>Drag and drop your PDF, DOCX, or TXT file here or click to select</p>
+              <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf,.docx,.txt"
+                style="display: none"
+              />
             </div>
-            <div class="settings-group">
-              <label for="pageRangeEnd">End Page:</label>
-              <input type="number" id="pageRangeEnd" min="1" value="1" />
-            </div>
-            <p class="page-info" id="pageInfo">Total pages: 0</p>
-          </div>
-          <div class="text-preview">
-            <textarea
-              id="textContent"
-              placeholder="Extracted text will appear here..."
-              readonly
-            ></textarea>
-          </div>
-        </section>
+            <button id="uploadBtn" class="btn btn-primary" disabled>
+              Upload File
+            </button>
+            <div id="uploadStatus" class="status-message"></div>
+          </section>
 
-        <!-- Settings Section -->
-        <section class="card" id="settingsSection" style="display: none">
-          <h2>Step 3: Configure Voice</h2>
-          <div class="settings-group">
-            <label for="voiceSelect">Select Voice:</label>
-            <select id="voiceSelect">
-              <option value="0">Default Voice</option>
-            </select>
-          </div>
-
-          <div class="settings-group">
-            <label for="rateSlider">Speech Rate: <span id="rateValue">150</span> wpm</label>
-            <input
-              type="range"
-              id="rateSlider"
-              min="50"
-              max="300"
-              value="150"
-              step="10"
-            />
-          </div>
-
-          <div class="settings-group">
-            <label for="volumeSlider">Volume: <span id="volumeValue">100</span>%</label>
-            <input
-              type="range"
-              id="volumeSlider"
-              min="0"
-              max="100"
-              value="100"
-              step="5"
-            />
-          </div>
-        </section>
-
-        <!-- Convert Section -->
-        <section class="card" id="convertSection" style="display: none">
-          <h2>Step 4: Convert to Speech</h2>
-          <button id="convertBtn" class="btn btn-success">
-            🔊 Convert to Speech
-          </button>
-          <div id="convertStatus" class="status-message"></div>
-        </section>
+          <!-- Convert Section -->
+          <section class="card workflow-card" id="convertSection" style="display: none">
+            <h2>Step 4: Convert to Speech</h2>
+            <button id="convertBtn" class="btn btn-success">
+              Convert to Speech
+            </button>
+            <p class="workflow-helper" id="currentSettingsSummary">
+              Open Settings to choose pages, voice, rate, and volume.
+            </p>
+            <div id="convertStatus" class="status-message"></div>
+          </section>
+        </div>
 
         <!-- Audio Player Section -->
         <section class="card" id="playerSection" style="display: none">
           <h2>Step 5: Play Audio</h2>
           <div class="player-controls">
-            <button id="playBtn" class="btn btn-control">▶ Play</button>
-            <button id="pauseBtn" class="btn btn-control">⏸ Pause</button>
-            <button id="stopBtn" class="btn btn-control">⏹ Stop</button>
+            <button id="playBtn" class="btn btn-control">Play</button>
+            <button id="pauseBtn" class="btn btn-control">Pause</button>
+            <button id="stopBtn" class="btn btn-control">Stop</button>
             <div class="progress-container">
               <span id="currentTime">0:00</span>
               <input type="range" id="progressBar" min="0" value="0" />
@@ -133,9 +87,9 @@
           <audio id="audioPlayer" style="display: none;"></audio>
           <div class="button-group">
             <button id="downloadBtn" class="btn btn-secondary">
-              ⬇️ Download Audio
+              Download Audio
             </button>
-            <button id="resetBtn" class="btn btn-secondary">↺ Start Over</button>
+            <button id="resetBtn" class="btn btn-secondary">Start Over</button>
           </div>
         </section>
       </main>
@@ -148,6 +102,6 @@
     <!-- Loading Spinner -->
     <div id="spinner" class="spinner" style="display: none"></div>
 
-    <script src="/static/script.js"></script>
+    <script src="/static/main.js"></script>
   </body>
 </html>

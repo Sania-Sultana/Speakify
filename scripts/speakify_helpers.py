@@ -67,8 +67,12 @@ def extract_text_file(text_path: str) -> dict:
     }
 
 
-def extract_document(file_path: str) -> dict:
-    suffix = Path(file_path).suffix.lower()
+def extract_document(file_path: str, file_type: str | None = None) -> dict:
+    # Use provided file_type if given, otherwise detect from file extension
+    if file_type:
+        suffix = f".{file_type.lower()}" if not file_type.startswith(".") else file_type.lower()
+    else:
+        suffix = Path(file_path).suffix.lower()
 
     if suffix == ".pdf":
         result = extract_pdf(file_path)
@@ -130,6 +134,7 @@ def main() -> int:
 
     extract_parser = subparsers.add_parser("extract", help="Extract document text")
     extract_parser.add_argument("--file", required=True)
+    extract_parser.add_argument("--file-type", required=False, help="File type (pdf, docx, txt). If not provided, will be detected from filename.")
 
     subparsers.add_parser("voices", help="List available voices")
 
@@ -143,7 +148,7 @@ def main() -> int:
 
     try:
         if args.command == "extract":
-            result = extract_document(args.file)
+            result = extract_document(args.file, args.file_type)
         elif args.command == "voices":
             result = get_voices()
         elif args.command == "synthesize":
