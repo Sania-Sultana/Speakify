@@ -10,12 +10,18 @@
     <div class="container">
       <header>
         <div class="header-top">
-          <h1>Speakify Settings</h1>
-          <a class="settings-toggle-btn icon-btn" href="/" aria-label="Back to main">
-            <!-- Left arrow icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+          <h1 class="brand-title">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 4c-3.9 0-7 2.9-7 6.5 0 2.7 1.7 5 4.2 6l.7 2a.9.9 0 0 0 1.7 0l.5-1.6h1.9c3.9 0 7-2.9 7-6.5S15.9 4 12 4Z" fill="currentColor" opacity="0.95"/>
+                <path d="M8.9 9.6h6.1M8.9 12h3.9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M9.1 14.8c1.1.5 2.2.7 2.9.7" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+              </svg>
+            </span>
+            <span>Speakify Settings</span>
+          </h1>
+          <a class="settings-toggle-btn icon-btn has-icon icon-back" href="/" aria-label="Back to main">
+            <span class="sr-only">Back to main</span>
           </a>
         </div>
         <p>Choose pages, voice, rate, and volume from one dedicated page</p>
@@ -28,17 +34,17 @@
         </section>
 
         <div class="settings-menu" role="tablist" aria-label="Settings options">
-          <button class="settings-option-btn is-active" type="button" data-panel="textSection">Review text</button>
-          <button class="settings-option-btn" type="button" data-panel="pagesSection">Select Pages</button>
-          <button class="settings-option-btn" type="button" data-panel="voiceSection">Select Voice</button>
-          <button class="settings-option-btn" type="button" data-panel="rateSection">Speech Rate</button>
-          <button class="settings-option-btn" type="button" data-panel="volumeSection">Volume</button>
-          <button id="darkModeToggle" class="settings-option-btn dark-mode-menu-btn" type="button">Dark Mode</button>
+          <button class="settings-option-btn is-active has-icon icon-review" type="button" data-panel="textSection">Review text</button>
+          <button class="settings-option-btn has-icon icon-pages" type="button" data-panel="pagesSection">Select Pages</button>
+          <button class="settings-option-btn has-icon icon-voice" type="button" data-panel="voiceSection">Select Voice</button>
+          <button class="settings-option-btn has-icon icon-rate" type="button" data-panel="rateSection">Speech Rate</button>
+          <button class="settings-option-btn has-icon icon-volume" type="button" data-panel="volumeSection">Volume</button>
+          <button id="darkModeToggle" class="settings-option-btn dark-mode-menu-btn has-icon icon-theme" type="button">Dark Mode</button>
         </div>
 
         <div class="settings-panel-grid settings-page-grid">
           <section class="card settings-card settings-pane is-active" id="textSection">
-            <h2>Step 2: Review Text</h2>
+            <h2>Review Text</h2>
             <div class="text-preview">
               <textarea id="textContent" placeholder="Extracted text will appear here..." readonly></textarea>
             </div>
@@ -59,13 +65,13 @@
               <p class="page-info" id="pageInfo">Total pages: 0</p>
             </div>
             <div class="page-actions">
-              <button id="applyPagesBtn" class="btn btn-primary btn-small" type="button">Apply Pages</button>
+              <button id="applyPagesBtn" class="btn btn-primary btn-small has-icon icon-apply" type="button">Apply Pages</button>
               <p id="pageSelectionStatus" class="page-selection-status">Select a range and apply it to preview only those pages.</p>
             </div>
           </section>
 
           <section class="card settings-card settings-pane" id="voiceSection">
-            <h2>Step 3: Select Voice</h2>
+            <h2>Select Voice</h2>
             <div class="settings-group">
               <label for="voiceSelect">Select Voice:</label>
               <select id="voiceSelect">

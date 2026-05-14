@@ -21,3 +21,4 @@ echo.
 node server.js
 
 pause
+.\run_production.bat
